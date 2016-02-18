@@ -7,6 +7,7 @@ export interface SpriteRendererConfigPub {
   color: string;
   overrideOpacity: boolean; opacity: number;
   materialType: string; shaderAssetId: string;
+  blending: string;
 }
 
 export default class SpriteRendererConfig extends SupCore.Data.Base.ComponentConfig {
@@ -24,7 +25,8 @@ export default class SpriteRendererConfig extends SupCore.Data.Base.ComponentCon
     overrideOpacity: { type: "boolean", mutable: true },
     opacity: { type: "number?", min: 0, max: 1, mutable: true },
     materialType: { type: "enum", items: ["basic", "phong", "shader"], mutable: true },
-    shaderAssetId: { type: "string?", min: 0, mutable: true }
+    shaderAssetId: { type: "string?", min: 0, mutable: true },
+    blending: { type: "enum", items: ["normal", "additive", "subtractive", "multiply"], mutable: true}
   };
 
   static create() {
@@ -36,7 +38,8 @@ export default class SpriteRendererConfig extends SupCore.Data.Base.ComponentCon
       castShadow: false, receiveShadow: false,
       color: "ffffff",
       overrideOpacity: false, opacity: null,
-      materialType: "basic", shaderAssetId: null
+      materialType: "basic", shaderAssetId: null,
+      blending: "normal"
     };
     return emptyConfig;
   }
@@ -47,6 +50,9 @@ export default class SpriteRendererConfig extends SupCore.Data.Base.ComponentCon
 
     if (pub.formatVersion == null) {
       pub.formatVersion = 1;
+
+      // NOTE: Blend modes added by GMG - fix this because I probably did it wrongly
+      if (pub.blending == null) pub.blending = "normal";
 
       // NOTE: Settings introduced in Superpowers 0.8
       if (pub.overrideOpacity == null) pub.overrideOpacity = false;

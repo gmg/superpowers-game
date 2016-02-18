@@ -32,6 +32,8 @@ export default class SpriteRendererEditor {
   shaderTextField: HTMLInputElement;
   shaderButtonElt: HTMLButtonElement;
 
+  blendingSelectBox: HTMLSelectElement;
+
   asset: SpriteAsset;
   overrideOpacity: boolean;
   opacity: number;
@@ -174,6 +176,17 @@ export default class SpriteRendererEditor {
     this.shaderButtonElt.disabled = this.shaderAssetId == null;
     this.shaderRow.hidden = config.materialType !== "shader";
 
+    let blendingRow = SupClient.table.appendRow(tbody, SupClient.i18n.t("componentEditors:SpriteRenderer.blending"));
+    this.blendingSelectBox = SupClient.table.appendSelectBox(blendingRow.valueCell, {
+        "normal": "Normal",
+        "additive": "Additive",
+        "subtractive": "Subtractive",
+        "multiply": "Multiply"
+        }, config.blending);
+    this.blendingSelectBox.addEventListener("change", (event: any) => {
+      this.editConfig("setProperty", "blending", event.target.value);
+    });
+
     this.projectClient.subEntries(this);
   }
 
@@ -250,6 +263,10 @@ export default class SpriteRendererEditor {
         if (value != null) this.shaderTextField.value = this.projectClient.entries.getPathFromId(value);
         else this.shaderTextField.value = "";
         break;
+
+      case "blending":
+        this.blendingSelectBox.value = value;
+        break;
     }
   }
 
@@ -262,6 +279,7 @@ export default class SpriteRendererEditor {
     this.colorPicker.disabled = false;
     this.materialSelectBox.disabled = false;
     this.shaderTextField.disabled = false;
+    this.blendingSelectBox.disabled = false;
 
     if (entries.byId[this.spriteAssetId] != null) {
       this.spriteTextField.value = entries.getPathFromId(this.spriteAssetId);

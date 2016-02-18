@@ -23,7 +23,7 @@ export function setupComponent(player: SupRuntime.Player, component: any, config
         shader = shaderAsset.__inner;
       }
     }
-    component.setSprite(sprite.__inner, config.materialType, shader);
+    component.setSprite(sprite.__inner, config.materialType, shader, config.blending);
 
     if (config.animationId != null) {
       // FIXME: should we load sprite with SupCore.Data?

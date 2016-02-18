@@ -16,6 +16,7 @@ export default class SpriteRendererUpdater {
   materialType: string;
   shaderAssetId: string;
   shaderPub: any;
+  blending: string;
   overrideOpacity = false;
   opacity: number;
 
@@ -41,6 +42,7 @@ export default class SpriteRendererUpdater {
     this.animationId = config.animationId;
     this.materialType = config.materialType;
     this.shaderAssetId = config.shaderAssetId;
+    this.blending = config.blending;
 
     this.spriteRenderer.horizontalFlip = config.horizontalFlip;
     this.spriteRenderer.verticalFlip = config.verticalFlip;
@@ -101,7 +103,7 @@ export default class SpriteRendererUpdater {
       return;
     }
 
-    this.spriteRenderer.setSprite(this.spriteAsset.pub, this.materialType, this.shaderPub);
+    this.spriteRenderer.setSprite(this.spriteAsset.pub, this.materialType, this.shaderPub, this.blending);
     if (this.animationId != null) this._playAnimation();
   }
 
@@ -270,6 +272,11 @@ export default class SpriteRendererUpdater {
         this.spriteRenderer.setSprite(null);
 
         if (this.shaderAssetId != null) this.client.subAsset(this.shaderAssetId, "shader", this.shaderSubscriber);
+        break;
+
+      case "blending":
+        this.blending = value;
+        this.spriteRenderer.setBlending(value);
         break;
     }
   }

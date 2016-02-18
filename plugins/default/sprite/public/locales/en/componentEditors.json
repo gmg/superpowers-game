@@ -15,6 +15,7 @@
     "transparent": "Transparent",
     "opaque": "Opaque",
     "material": "Material",
-    "shader": "Shader"
+    "shader": "Shader",
+    "blending": "Blending"
   }
 }

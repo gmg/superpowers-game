@@ -18,6 +18,7 @@ export default class SpriteRenderer extends SupEngine.ActorComponent {
   material: THREE.MeshBasicMaterial|THREE.MeshPhongMaterial|THREE.ShaderMaterial;
   materialType = "basic";
   shaderAsset: any;
+  blending = "normal";
   threeMesh: THREE.Mesh;
   horizontalFlip = false;
   verticalFlip = false;
@@ -38,7 +39,7 @@ export default class SpriteRenderer extends SupEngine.ActorComponent {
     super(actor, "SpriteRenderer");
   }
 
-  setSprite(asset: SpriteAssetPub, materialType?: string, customShader?: any) {
+  setSprite(asset: SpriteAssetPub, materialType?: string, customShader?: any, blending?: string) {
     this._clearMesh();
 
     this.asset = asset;
@@ -77,6 +78,7 @@ export default class SpriteRenderer extends SupEngine.ActorComponent {
     }
     this.material.side = THREE.DoubleSide;
     this.setColor(this.color.r, this.color.g, this.color.b);
+    if (blending != null) this.setBlending(blending);
 
     // TEMP
     // this.asset.textures["map"].wrapS = THREE.RepeatWrapping;
@@ -132,6 +134,23 @@ export default class SpriteRenderer extends SupEngine.ActorComponent {
       this.material.opacity = 1;
     }
     this.material.needsUpdate = true;
+  }
+
+  setBlending(blending: string){
+      switch (blending) {
+          case "normal":
+            this.material.blending = THREE.NormalBlending;
+            break;
+          case "additive":
+            this.material.blending = THREE.AdditiveBlending;
+            break;
+          case "subtractive":
+            this.material.blending = THREE.SubtractiveBlending;
+            break;
+          case "multiply":
+            this.material.blending = THREE.MultiplyBlending;
+            break;
+      }
   }
 
   setHorizontalFlip(horizontalFlip: boolean) {
