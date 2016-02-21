@@ -5,7 +5,7 @@ declare namespace Sup {
 
     getSprite(): Sprite;
     setSprite(pathOrAsset: string|Sprite): SpriteRenderer;
-    setSprite(pathOrAsset: string|Sprite, materialType?: SpriteRenderer.MaterialType, shaderPathOrAsset?: string|Shader): SpriteRenderer;
+    setSprite(pathOrAsset: string|Sprite, materialType?: SpriteRenderer.MaterialType, shaderPathOrAsset?: string|Shader, blending?: SpriteRenderer.Blending): SpriteRenderer;
     
     getMaterialType(): SpriteRenderer.MaterialType;
     getShader(): Shader;
@@ -17,6 +17,8 @@ declare namespace Sup {
     getVerticalFlip(): boolean;
     getOpacity(): number;
     setOpacity(opacity: number): SpriteRenderer;
+    setBlending(blending: string): SpriteRenderer;
+    
     getColor(): Sup.Color;
     setColor(color: Sup.Color): SpriteRenderer;
     setColor(r: number, g: number, b: number): SpriteRenderer;
@@ -38,6 +40,7 @@ declare namespace Sup {
   }
 
   namespace SpriteRenderer {
-    enum MaterialType { Basic, Phong, Shader }
+    enum MaterialType { Basic, Phong, Shader };
+    enum Blending { Normal, Additive, Subtractive, Multiply };
   }
 }

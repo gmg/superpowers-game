@@ -16,6 +16,7 @@
     "opaque": "Opaque",
     "material": "Material",
     "shader": "Shader",
-    "blending": "Blending"
+    "blending": "Blending",
+    "blendingTitle": "For blending modes other than Normal, you must set the sprite as Transparent"
   }
 }

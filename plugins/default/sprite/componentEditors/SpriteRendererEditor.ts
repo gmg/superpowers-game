@@ -147,6 +147,12 @@ export default class SpriteRendererEditor {
     (this.transparentField.children[0] as HTMLOptionElement).hidden = true;
     this.transparentField.addEventListener("change", (event) => {
       let opacity = this.transparentField.value === "transparent" ? 1 : null;
+      if (this.transparentField.value === "transparent") {
+        this.blendingSelectBox.disabled = false;
+      } else {
+        this.blendingSelectBox.value = "normal";
+        this.blendingSelectBox.disabled = true;
+      }
       this.editConfig("setProperty", "opacity", opacity);
     });
 
@@ -155,6 +161,21 @@ export default class SpriteRendererEditor {
       this.editConfig("setProperty", "opacity", parseFloat(event.target.value));
     });
     this.updateOpacityField();
+
+    let blendingRow = SupClient.table.appendRow(
+        tbody,
+        SupClient.i18n.t("componentEditors:SpriteRenderer.blending"),
+        { title: SupClient.i18n.t("componentEditors:SpriteRenderer.blendingTitle") });
+    this.blendingSelectBox = SupClient.table.appendSelectBox(blendingRow.valueCell, {
+        "normal": "Normal",
+        "additive": "Additive",
+        "subtractive": "Subtractive",
+        "multiply": "Multiply"
+        }, config.blending);
+    this.blendingSelectBox.addEventListener("change", (event: any) => {
+      this.editConfig("setProperty", "blending", event.target.value);
+    });
+    this.blendingSelectBox.disabled = true;
 
     let materialRow = SupClient.table.appendRow(tbody, SupClient.i18n.t("componentEditors:SpriteRenderer.material"));
     this.materialSelectBox = SupClient.table.appendSelectBox(materialRow.valueCell, { "basic": "Basic", "phong": "Phong", "shader": "Shader" }, config.materialType);
@@ -175,17 +196,6 @@ export default class SpriteRendererEditor {
     });
     this.shaderButtonElt.disabled = this.shaderAssetId == null;
     this.shaderRow.hidden = config.materialType !== "shader";
-
-    let blendingRow = SupClient.table.appendRow(tbody, SupClient.i18n.t("componentEditors:SpriteRenderer.blending"));
-    this.blendingSelectBox = SupClient.table.appendSelectBox(blendingRow.valueCell, {
-        "normal": "Normal",
-        "additive": "Additive",
-        "subtractive": "Subtractive",
-        "multiply": "Multiply"
-        }, config.blending);
-    this.blendingSelectBox.addEventListener("change", (event: any) => {
-      this.editConfig("setProperty", "blending", event.target.value);
-    });
 
     this.projectClient.subEntries(this);
   }
@@ -381,6 +391,8 @@ export default class SpriteRendererEditor {
       } else {
         this.transparentField.value = "opaque";
         this.opacityFields.numberField.parentElement.hidden = true;
+        this.blendingSelectBox.value = "normal";
+        this.blendingSelectBox.disabled = true;
       }
     }
   }
